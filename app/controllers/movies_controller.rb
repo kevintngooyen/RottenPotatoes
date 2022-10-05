@@ -37,11 +37,16 @@ class MoviesController < ApplicationController
 
       @movies = Movie.with_ratings(@ratings_to_show)
  
-      @movies = @movies.order(params[:sort_by]) if params[:sort_by] != ''
-      session[:sort_by] = params[:sort_by]
-      @title_header = (params[:sort_by]=='title') ? 'hilite bg-warning' : ''
-      @release_date_header = (params[:sort_by]=='release_date') ? 'hilite bg-warning' : ''
-      
+      if params.has_key?(:sort_by)
+        session[:sort_by] = params[:sort_by]
+        @movies = @movies.order(params[:sort_by])
+        if params[:sort_by]=='title'
+          @title_header = 'hilite bg-warning' 
+        end
+        if params[:sort_by]=='release_date'
+          @release_date_header = 'hilite bg-warning' 
+        end 
+      end 
     end
 
     def new
