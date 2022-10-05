@@ -27,9 +27,12 @@ class MoviesController < ApplicationController
         #redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by]) and return
       #end 
 
-      @ratings_to_show = params[:ratings].keys
-      @ratings_to_show_as_hash = {}
-      @ratings_to_show.each do |i|
+      if !params.has_key?(:ratings)
+        @ratings_to_show = []
+      else
+        @ratings_to_show = params[:ratings].keys
+        @ratings_to_show_as_hash = {}
+        @ratings_to_show.each do |i|
         @ratings_to_show_as_hash[i] = 1
       end
       #session[:ratings] = @ratings_to_show_as_hash
