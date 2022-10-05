@@ -15,7 +15,8 @@ class MoviesController < ApplicationController
 
       if !session.has_key?(:rating)
         session[:rating] = @all_ratings
-
+      end 
+      
       if !params.has_key?(:ratings)
         @ratings_to_show = session[:rating]
       else
