@@ -8,10 +8,6 @@ class MoviesController < ApplicationController
   
     def index
       @all_ratings = Movie.all_ratings
-      @all_ratings_as_hash = {}
-      @all_ratings.each do |i|
-        @all_ratings_as_hash[i] = 1
-      end
 
       if params.has_key?(:ratings)
         session[:ratings] = params[:ratings]
@@ -28,7 +24,7 @@ class MoviesController < ApplicationController
         @ratings_to_show = params[:ratings].keys
         @movies = Movie.where(rating: @ratings_to_show).order(session[:sort_by])
       elsif params.has_key?(:sort_by)
-        @movies = Movie.all.order(session[:sort])
+        @movies = Movie.all.order(session[:sort_by])
       elsif session.has_key?[:ratings] || session.has_key?[:sort_by]
         redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by])
       else
@@ -52,6 +48,7 @@ class MoviesController < ApplicationController
           @release_date_header = 'hilite bg-warning' 
         end 
       end 
+
     end
 
     def new
