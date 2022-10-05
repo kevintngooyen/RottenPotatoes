@@ -25,7 +25,7 @@ class MoviesController < ApplicationController
 
         redirect_to movies_path(:ratings => @all_ratings_as_hash, :sort_by => '') and return
 
-      elsif (!params.has_key?(:ratings) || !params.has_key?("sort_by"))
+      elsif (!params.has_key?(:ratings) || !params.has_key?(:sort_by))
         redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by]) and return
       end 
 
@@ -39,7 +39,7 @@ class MoviesController < ApplicationController
       @movies = Movie.with_ratings(@ratings_to_show)
 
       if params.has_key?(:sort_by)
-        @movies = @movies.order(params["sort_by"])
+        @movies = @movies.order(params[:sort_by])
         session[:sort_by] = params[:sort_by]
 
         if params[:sort_by]=='title'
@@ -51,7 +51,7 @@ class MoviesController < ApplicationController
         end 
 
       end 
-      
+
     end
 
     def new
