@@ -33,7 +33,8 @@ class MoviesController < ApplicationController
         @ratings_to_show = params[:ratings].keys
         @ratings_to_show_as_hash = {}
         @ratings_to_show.each do |i|
-        @ratings_to_show_as_hash[i] = 1
+          @ratings_to_show_as_hash[i] = 1
+        end 
       end
       #session[:ratings] = @ratings_to_show_as_hash
 
