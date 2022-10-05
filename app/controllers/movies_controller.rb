@@ -8,10 +8,10 @@ class MoviesController < ApplicationController
   
     def index
       @all_ratings = Movie.all_ratings
-      @all_ratings_as_hash = {}
-      @all_ratings.each do |i|
-        @all_ratings_as_hash[i] = 1
-      end
+      #@all_ratings_as_hash = {}
+      #@all_ratings.each do |i|
+        #@all_ratings_as_hash[i] = 1
+      #end
 
       #if !session.key?(:ratings) || !session.key?(:sort_by)
         #if !session.key?(:ratings)
@@ -42,15 +42,8 @@ class MoviesController < ApplicationController
       if params.has_key?(:sort_by)
         @movies = @movies.order(params[:sort_by])
         #session[:sort_by] = params[:sort_by]
-
-        if params[:sort_by]=='title'
-          @title_header = 'hilite bg-warning' 
-        end 
-
-        if params[:sort_by]=='release_date'
-          @release_date_header = 'hilite bg-warning'
-        end 
-
+        @title_header = 'hilite bg-warning' if params[:sort_by]=='title'
+        @release_date_header = 'hilite bg-warning' if params[:sort_by]=='release_date'
       end 
 
     end
