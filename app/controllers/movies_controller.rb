@@ -38,7 +38,7 @@ class MoviesController < ApplicationController
 
       if params.has_key?(:sort_by)
         @movies = @movies.order(params[:sort_by])
-        session[:sort_by] = params[:sort_by]
+        #session[:sort_by] = params[:sort_by]
 
         if params[:sort_by]=='title'
           @title_header = 'hilite bg-warning' 
