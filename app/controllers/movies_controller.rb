@@ -20,9 +20,8 @@ class MoviesController < ApplicationController
         session[:sort_by] = ''
       end 
 
-      if (!params.has_key?(:ratings) && session.key?(:ratings)) ||
-        (!params.has_key?(:sort_by) && session.key?(:sort_by))
-        redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by]) and return
+      if !params.has_key?(:ratings) || !params.has_key?(:sort_by)
+        redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by])
       end
 
       @ratings_to_show = params[:ratings].keys
