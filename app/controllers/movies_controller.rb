@@ -39,10 +39,10 @@ class MoviesController < ApplicationController
       session[:ratings] = @ratings_to_show_as_hash
 
       @movies = Movie.with_ratings(@ratings_to_show)
+      session[:sort_by] = params[:sort_by]
 
       if params.has_key?(:sort_by)
         @movies = @movies.order(params[:sort_by])
-        session[:sort_by] = params[:sort_by]
         if params[:sort_by]=='title'
           @title_header = 'hilite bg-warning' 
         end
