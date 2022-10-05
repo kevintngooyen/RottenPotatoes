@@ -13,19 +13,16 @@ class MoviesController < ApplicationController
         @all_ratings_as_hash[i] = 1
       end
 
-      if !session.key?(:ratings) || !session.key?(:sort_by)
-        if !session.key?(:ratings)
-          session[:ratings] = @all_ratings_as_hash
-        end 
-        if !session.key?(:sort_by)
-          session[:sort_by] = ''
-        end 
-        redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by]) and return
-      end
+      if !session.key?(:ratings)
+        session[:ratings] = @all_ratings_as_hash
+      end 
+      if !session.key?(:sort_by)
+        session[:sort_by] = ''
+      end 
 
       if (!params.has_key?(:ratings) && session.key?(:ratings)) ||
         (!params.has_key?(:sort_by) && session.key?(:sort_by))
-        redirect_to movies_path(:ratings => Hash[session[:ratings].collect {|key| [key, '1']}], :sort_by => session[:sort_by]) and return
+        redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by]) and return
       end
 
       @ratings_to_show = params[:ratings].keys
@@ -33,7 +30,7 @@ class MoviesController < ApplicationController
       @ratings_to_show.each do |i|
         @ratings_to_show_as_hash[i] = 1
       end 
-      session[:ratings] = @ratings_to_show
+      session[:ratings] = @ratings_to_show_as_hash
 
       @movies = Movie.with_ratings(@ratings_to_show)
  
