@@ -10,12 +10,12 @@ class MoviesController < ApplicationController
       @all_ratings = Movie.all_ratings
 
       if !params.has_key?(:ratings)
-        @ratings = []
+        @ratings_to_show  = []
       else
-        @ratings = params[:ratings].keys
+        @ratings_to_show  = params[:ratings].keys
       end
-      
-      @movies = Movie.with_ratings(@ratings)
+
+      @movies = Movie.with_ratings(@ratings_to_show )
 
     end
   
