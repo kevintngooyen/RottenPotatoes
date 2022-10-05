@@ -24,7 +24,7 @@ class MoviesController < ApplicationController
         end 
 
         redirect_to movies_path(:ratings => @all_ratings_as_hash, :sort_by => '') and return
-        
+
       elsif (!params.has_key?(:ratings) || !params.has_key?("sort_by"))
         redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by]) and return
       end 
@@ -40,17 +40,18 @@ class MoviesController < ApplicationController
 
       if params.has_key?(:sort_by)
         @movies = @movies.order(params["sort_by"])
-      end 
+        session[:sort_by] = params[:sort_by]
 
-      session[:sort_by] = params[:sort_by]
+        if params[:sort_by]=='title'
+          @title_header = 'hilite bg-warning' 
+        end 
 
-      if params[:sort_by]=='title'
-        @title_header = 'hilite bg-warning' 
-      end 
+        if params[:sort_by]=='release_date'
+          @release_date_header = 'hilite bg-warning'
+        end 
 
-      if params[:sort_by]=='release_date'
-        @release_date_header = 'hilite bg-warning'
       end 
+      
     end
 
     def new
