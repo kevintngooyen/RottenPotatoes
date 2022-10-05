@@ -8,30 +8,28 @@ class MoviesController < ApplicationController
   
     def index
       @all_ratings = Movie.all_ratings
-
-      if params.has_key?(:ratings)
-        session[:ratings] = params[:ratings]
+      @all_ratings_as_hash = {}
+      @all_ratings.each do |i|
+        @all_ratings_as_hash[i] = 1
       end
 
-      if params.has_key?(:sort_by)
-        session[:sort_by] = params[:sort_by]
-      end
-
-      if (!params.has_key?(:ratings) && session.has_key?[:ratings]) ||
-        (!params.has_key?(:sort_by) && session.has_key?[:sort_by])
-        redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by])
-      elsif params.has_key?(:ratings)
-        @ratings_to_show = params[:ratings].keys
-        @movies = Movie.where(rating: @ratings_to_show).order(session[:sort_by])
-      elsif params.has_key?(:sort_by)
-        @movies = Movie.all.order(session[:sort_by])
-      elsif session.has_key?[:ratings] || session.has_key?[:sort_by]
-        redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by])
+      if !params.has_key?(:ratings)
+        @ratings_to_show = @all_ratings
       else
-        @movies = Movie.all
+        @ratings_to_show = params[:ratings].keys
+        @ratings_to_show_as_hash = {}
+        @ratings_to_show.each do |i|
+          @ratings_to_show_as_hash[i] = 1
+        end 
       end 
+      
+      session[:ratings] = @ratings_to_show_as_hash
 
+      @movies = Movie.with_ratings(@ratings_to_show)
+ 
       if params.has_key?(:sort_by)
+        @movies = @movies.order(params[:sort_by])
+        session[:sort_by] = params[:sort_by]
         if params[:sort_by]=='title'
           @title_header = 'hilite bg-warning' 
         end
@@ -39,16 +37,6 @@ class MoviesController < ApplicationController
           @release_date_header = 'hilite bg-warning' 
         end 
       end 
-
-      if session.has_key?(:sort_by)
-        if session[:sort_by]=='title'
-          @title_header = 'hilite bg-warning' 
-        end
-        if session[:sort_by]=='release_date'
-          @release_date_header = 'hilite bg-warning' 
-        end 
-      end 
-
     end
 
     def new
