@@ -41,10 +41,11 @@ class MoviesController < ApplicationController
 
       if params.has_key?(:sort_by)
         @movies = @movies.order(params["sort_by"])
-        session[:sort_by] = params[:sort_by]
-        @title_header = 'hilite bg-warning' if params[:sort_by]=='title'
-        @release_date_header = 'hilite bg-warning' if params[:sort_by]=='release_date'
       end 
+
+      session[:sort_by] = params[:sort_by]
+      @title_header = 'hilite bg-warning' if params[:sort_by]=='title'
+      @release_date_header = 'hilite bg-warning' if params[:sort_by]=='release_date'
     end
 
     def new
