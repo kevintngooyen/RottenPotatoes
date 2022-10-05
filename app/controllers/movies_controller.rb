@@ -28,7 +28,7 @@ class MoviesController < ApplicationController
       #end 
 
       if !params.has_key?(:ratings)
-        @ratings_to_show = @all_ratings_as_hash
+        @ratings_to_show = @all_ratings
       else
         @ratings_to_show = params[:ratings].keys
         @ratings_to_show_as_hash = {}
