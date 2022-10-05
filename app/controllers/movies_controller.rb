@@ -19,6 +19,10 @@ class MoviesController < ApplicationController
 
       if !params.has_key?(:ratings)
         @ratings_to_show = session[:rating]
+        @ratings_to_show_as_hash = {}
+        @ratings_to_show.each do |i|
+          @ratings_to_show_as_hash[i] = 1
+        end 
       else
         @ratings_to_show = params[:ratings].keys
         session[:ratings] = @ratings_to_show
