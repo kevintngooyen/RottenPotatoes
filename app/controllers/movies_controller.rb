@@ -10,12 +10,12 @@ class MoviesController < ApplicationController
       @all_ratings = Movie.all_ratings
 
       if !session.key?(:ratings) || !session.key?(:sort_by)
+        @all_ratings_as_hash = {}
+        @all_ratings.each do |i|
+          @all_ratings_as_hash[i] = 1
+        end
 
         if !session.key?(:ratings)
-          @all_ratings_as_hash = {}
-          @all_ratings.each do |i|
-            @all_ratings_as_hash[i] = 1
-          end
           session[:ratings] = @all_ratings_as_hash
         end
         
@@ -35,7 +35,7 @@ class MoviesController < ApplicationController
       @ratings_to_show.each do |i|
         @ratings_to_show_as_hash[i] = 1
       end
-      sessions[:ratings] = @ratings_to_show_as_hash
+      session[:ratings] = @ratings_to_show_as_hash
 
       @movies = Movie.with_ratings(@ratings_to_show)
 
