@@ -17,14 +17,12 @@ class MoviesController < ApplicationController
         @ratings_to_show.each do |i|
           @rating_to_show_as_hash[i] = 1
         end
-        session[:ratings] = @rating_to_show_as_hash
       end
 
       @movies = Movie.with_ratings(@ratings_to_show )
  
       if params.has_key?(:sort_by)
         @movies = @movies.order(params[:sort_by])
-        session[:sort_by] = params[:sort_by]
         @title_color = 'hilite bg-warning' if params[:sort_by]=='title'
         @release_date_color = 'hilite bg-warning' if params[:sort_by]=='release_date'
       end 
