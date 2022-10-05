@@ -25,7 +25,7 @@ class MoviesController < ApplicationController
 
       if (!params.has_key?(:ratings) && session.key?(:ratings)) ||
         (!params.has_key?(:sort_by) && session.key?(:sort_by))
-        redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by]) and return
+        redirect_to movies_path(:ratings => Hash[session[:ratings].collect {|key| [key, '1']}], :sort_by => session[:sort_by]) and return
       end
 
       @ratings_to_show = params[:ratings].keys
@@ -33,13 +33,13 @@ class MoviesController < ApplicationController
       @ratings_to_show.each do |i|
         @ratings_to_show_as_hash[i] = 1
       end 
-      session[:ratings] = @ratings_to_show_as_hash
+      session[:ratings] = @ratings_to_show
 
       @movies = Movie.with_ratings(@ratings_to_show)
  
       if params.has_key?(:sort_by)
-        session[:sort_by] = params[:sort_by]
         @movies = @movies.order(params[:sort_by])
+        session[:sort_by] = params[:sort_by]
         if params[:sort_by]=='title'
           @title_header = 'hilite bg-warning' 
         end
