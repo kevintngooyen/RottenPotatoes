@@ -14,18 +14,18 @@ class MoviesController < ApplicationController
       end
 
       if !params.has_key?(:ratings)
-        @movies = Movie.with_ratings(@all_ratings)
-        session[:ratings] = @all_ratings_as_hash
+        @ratings_to_show = @all_ratings
       else
         @ratings_to_show = params[:ratings].keys
         @ratings_to_show_as_hash = {}
         @ratings_to_show.each do |i|
           @ratings_to_show_as_hash[i] = 1
         end 
-        @movies = Movie.with_ratings(@ratings_to_show)
-        session[:ratings] = @ratings_to_show_as_hash
       end 
 
+      session[:ratings] = @ratings_to_show_as_hash
+
+      @movies = Movie.with_ratings(@ratings_to_show)
  
       if params.has_key?(:sort_by)
         session[:sort_by] = params[:sort_by]
