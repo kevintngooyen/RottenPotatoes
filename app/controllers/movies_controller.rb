@@ -9,16 +9,20 @@ class MoviesController < ApplicationController
     def index
       @all_ratings = Movie.all_ratings
 
-      if !session.key?(:ratings)
-        @all_ratings_as_hash = {}
-        @all_ratings.each do |i|
-          @all_ratings_as_hash[i] = 1
+      if !session.key?(:ratings) || !session.key?(:sort_by)
+
+        if !session.key?(:ratings)
+          @all_ratings_as_hash = {}
+          @all_ratings.each do |i|
+            @all_ratings_as_hash[i] = 1
+          end
+          session[:ratings] = @all_ratings_as_hash
         end
-        session[:ratings] = @all_ratings_as_hash
-        redirect_to movies_path(:ratings => session[:ratings]) and return
-      
-      elsif  !session.key?(:sort_by)
-        session[:sort_by] = ''
+        
+        if !session.key?(:sort_by)
+          session[:sort_by] = ''
+        end 
+
         redirect_to movies_path(:ratings => session[:ratings], :sort_by => session[:sort_by]) and return
       end 
 
@@ -33,7 +37,7 @@ class MoviesController < ApplicationController
       end
       sessions[:ratings] = @ratings_to_show_as_hash
 
-      @movies = Movie.with_ratings(ratings_to_show)
+      @movies = Movie.with_ratings(@ratings_to_show)
 
       if params.has_key?(:sort_by)
         @movies = @movies.order(params["sort_by"])
