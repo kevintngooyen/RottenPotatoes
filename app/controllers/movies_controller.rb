@@ -20,10 +20,7 @@ class MoviesController < ApplicationController
       end
 
       @movies = Movie.with_ratings(@ratings_to_show )
-      
-      @title_color = ''
-      @release_date_color = ''
-      
+ 
       if params.has_key?(:sort_by)
         @movies = @movies.order(params[:sort_by])
         @title_color = 'hilite bg-warning' if params[:sort_by]=='title'
