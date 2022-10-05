@@ -33,22 +33,15 @@ class MoviesController < ApplicationController
       @ratings_to_show.each do |i|
         @ratings_to_show_as_hash[i] = 1
       end 
-
       session[:ratings] = @ratings_to_show_as_hash
 
       @movies = Movie.with_ratings(@ratings_to_show)
  
-      if params.has_key?(:sort_by)
-        session[:sort_by] = params[:sort_by]
-        @movies = @movies.order(params[:sort_by])
-        if params[:sort_by]=='title'
-          @title_header = 'hilite bg-warning' 
-        end
-        if params[:sort_by]=='release_date'
-          @release_date_header = 'hilite bg-warning' 
-        end 
-      end 
-
+      @movies = @movies.order(params[:sort_by]) if params[:sort_by] != ''
+      session[:sort_by] = params[:sort_by]
+      @title_header = (params[:sort_by]=='title') ? 'hilite bg-warning' : ''
+      @release_date_header = (params[:sort_by]=='release_date') ? 'hilite bg-warning' : ''
+      
     end
 
     def new
